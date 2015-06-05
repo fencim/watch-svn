@@ -1,0 +1,54 @@
+{
+  "name": "grunt-watch-svn",
+  "description": "Grunt plugin to watch change on SVN",
+  "version": "0.1.6",
+  "homepage": "https://github.com/fencim/watch-svn",
+  "author": {
+    "name": "Lucman Abdulrachman",
+    "email": "fencim@gmail.com",
+    "url": "https://github.com/fencim"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fencim/watch-svn"
+  },
+  "bugs": {
+    "url": "https://github.com/fencim/watch-svn/issues"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/fencim/watch-svn/blob/master/LICENSE-MIT"
+    }
+  ],
+  "engines": {
+    "node": ">= 0.8.0"
+  },
+  "scripts": {
+    "test": "grunt test"
+  },
+  "devDependencies": {
+    "grunt-contrib-jshint": "^0.9.2",
+    "grunt-contrib-clean": "^0.5.0",
+    "grunt-contrib-nodeunit": "^0.3.3",
+    "grunt": "~0.4.5"
+  },
+  "dependencies": {
+    "async": "^0.9.0",
+    "tiny-lr": "0.0.4"
+  },
+  "peerDependencies": {
+    "grunt": "~0.4.5"
+  },
+  "keywords": [
+    "gruntplugin"
+  ],
+  "readme": "# grunt-watch-svn\r\n\r\n> Grunt plugin to watch change on SVN\r\n\r\n## Getting Started\r\nThis plugin requires Grunt `~0.4.5`\r\n\r\nIf you haven't used [Grunt](http://gruntjs.com/) before, be sure to check out the [Getting Started](http://gruntjs.com/getting-started) guide, as it explains how to create a [Gruntfile](http://gruntjs.com/sample-gruntfile) as well as install and use Grunt plugins. Once you're familiar with that process, you may install this plugin with this command:\r\n\r\n```shell\r\nnpm install grunt-watch-svn --save-dev\r\n```\r\n\r\nOnce the plugin has been installed, it may be enabled inside your Gruntfile with this line of JavaScript:\r\n\r\n```js\r\ngrunt.loadNpmTasks('grunt-watch-svn');\r\n```\r\n\r\n## watch-svn task\r\n_Run this task with the `grunt watch-svn` command._\r\n\r\n\r\n### Settings\r\n\r\nThere are a number of options available. Please review the [minimatch options here](https://github.com/isaacs/minimatch#options). As well as some additional options as follows:\r\n\r\n#### repos\r\nType: `Array`\r\n\r\nThis defines what repositories this task will watch. Is an array of objects with dir and repo properties.\r\n\r\n#### repos[].dir\r\nType: `String`\r\n\r\nThis defines the location of local base directory. .\r\n\r\n#### tasks\r\nType: `String|Array`\r\n\r\nThis defines which tasks to run when a watched repository event occurs.\r\n\r\n#### options.spawn\r\nType: `Boolean`\r\nDefault: true\r\n\r\nWhether to spawn task runs in a child process. Setting this option to `false` speeds up the reaction time of the watch (usually 500ms faster for most) and allows subsequent task runs to share the same context. Not spawning task runs can make the watch more prone to failing so please use as needed.\r\n\r\nExample:\r\n```js\r\n\"watch-svn\": {\r\n  scripts: {\r\n    repos: [{\r\n      dir : 'source/target',\r\n      repo : 'http://svnserver/svn/target/branches/wip'\r\n    }],\r\n    tasks: ['jshint'],\r\n    options: {\r\n      spawn: false,\r\n    },\r\n  },\r\n},\r\n```\r\n\r\n*For backwards compatibility the option `nospawn` is still available and will do the opposite of `spawn`.*\r\n\r\n#### options.interrupt\r\nType: `Boolean`\r\nDefault: false\r\n\r\nAs files are modified this watch task will spawn tasks in child processes. The default behavior will only spawn a new child process per target when the previous process has finished. Set the `interrupt` option to true to terminate the previous process and spawn a new one upon later changes.\r\n\r\nExample:\r\n```js\r\n\"watch-svn\": {\r\n  scripts: {\r\n    repos: [{\r\n      dir : 'source/target',\r\n      repo : 'http://svnserver/svn/target/branches/wip'\r\n    }],\r\n    tasks: ['jshint'],\r\n    options: {\r\n      interrupt: true,\r\n    },\r\n  },\r\n},\r\n```\r\n\r\n#### options.debounceDelay\r\nType: `Integer`\r\nDefault: 500\r\n\r\nHow long to wait before emitting events in succession for the same filepath and status. For example if your `Gruntfile.js` file was `changed`, a `changed` event will only fire again after the given milliseconds.\r\n\r\nExample:\r\n```js\r\n\"watch-svn\": {\r\n  scripts: {\r\n    repos: [{\r\n      dir : 'source/target',\r\n      repo : 'http://svnserver/svn/target/branches/wip'\r\n    }],\r\n    tasks: ['jshint'],\r\n    options: {\r\n      debounceDelay: 250,\r\n    },\r\n  },\r\n},\r\n```\r\n\r\n#### options.interval\r\nType: `Integer`\r\nDefault: 1000\r\n\r\nThe `interval` is passed to svnwatcher. This defines the time interval between svn update check; it is recommended to ignore this option. *Default is 1000ms*.\r\n\r\n#### options.event\r\nType: `String|Array`\r\nDefault: `'all'`\r\n\r\nSpecify the type watch event that trigger the specified task. This option can be one or many of: `'all'`, `'modified'`, `'added'`, `'replaced'` and `'deleted'`. This options equivalent shorten to : `'*'`, `'m'`, `'a'`, `'r'` and `'d'` \r\n\r\nExample:\r\n```js\r\n\"watch-svn\": {\r\n  scripts: {\r\n    repos: [{\r\n      dir : 'source/target',\r\n      repo : 'http://svnserver/svn/target/branches/wip'\r\n    }],\r\n    tasks: ['generateFileManifest'],\r\n    options: {\r\n      event: ['added', 'deleted'],\r\n    },\r\n  },\r\n},\r\n```\r\n\r\n#### options.forever\r\nType: `Boolean`\r\nDefault: true\r\n\r\nThis is *only a task level option* and cannot be configured per target. By default the watch task will duck punch `grunt.fatal` and `grunt.warn` to try and prevent them from exiting the watch process. If you don't want `grunt.fatal` and `grunt.warn` to be overridden set the `forever` option to `false`.\r\n\r\n#### options.dateFormat\r\nType: `Function`\r\n\r\nThis is *only a task level option* and cannot be configured per target. By default when the watch has finished running tasks it will display the message `Completed in 1.301s at Thu Jul 18 2013 14:58:21 GMT-0700 (PDT) - Waiting...`. You can override this message by supplying your own function:\r\n\r\n```js\r\n\"watch-svn\": {\r\n  options: {\r\n    dateFormat: function(time) {\r\n      grunt.log.writeln('The watch finished in ' + time + 'ms at' + (new Date()).toString());\r\n      grunt.log.writeln('Waiting for more changes...');\r\n    },\r\n  },\r\n  scripts: {\r\n    repos: [{\r\n      dir : 'source/target',\r\n      repo : 'http://svnserver/svn/target/branches/wip'\r\n    }],\r\n    tasks: 'jshint',\r\n  },\r\n},\r\n```\r\n\r\n#### options.atBegin\r\nType: `Boolean`\r\nDefault: false\r\n\r\nThis option will trigger the run of each specified task at startup of the watcher.\r\n\r\n\r\n### Examples\r\n\r\n```js\r\n// Simple config to run jshint any time a file is added, changed or deleted\r\ngrunt.initConfig({\r\n  \"watch-svn\": {\r\n    repos: [{\r\n      dir : 'source/target',\r\n      repo : 'http://svnserver/svn/target/branches/wip'\r\n    }],\r\n    tasks: ['jshint'],\r\n  },\r\n});\r\n```\r\n\r\n```js\r\n// Advanced config. Run specific tasks when specific files are added, changed or deleted.\r\ngrunt.initConfig({\r\n  \"watch-svn\": {\r\n    gruntfile: {\r\n      repos: [{\r\n        dir : 'source/target',\r\n        repo : 'http://svnserver/svn/target/branches/wip'\r\n      }],\r\n      tasks: ['jshint:gruntfile'],\r\n    },\r\n    src: {\r\n      repos: [{\r\n        dir : 'source/target',\r\n        repo : 'http://svnserver/svn/target/branches/wip'\r\n      }],\r\n      tasks: ['default'],\r\n    },\r\n    test: {\r\n      files: '<%= jshint.test.src %>',\r\n      tasks: ['jshint:test', 'qunit'],\r\n    },\r\n  },\r\n});\r\n```\r\n\r\n#### Using the `watch-svn` event\r\nThis task will emit a `watch` event when watched files are modified. This is useful if you would like a simple notification when files are edited or if you're using this task in tandem with another task. Here is a simple example using the `watch` event:\r\n\r\n```js\r\ngrunt.initConfig({\r\n  \"watch-svn\": {\r\n    scripts: {\r\n      repos: [{\r\n        dir : 'source/target',\r\n        repo : 'http://svnserver/svn/target/branches/wip'\r\n      }],\r\n    },\r\n  },\r\n});\r\ngrunt.event.on('watch', function(action, filepath, target) {\r\n  grunt.log.writeln(target + ': ' + filepath + ' has ' + action);\r\n});\r\n```\r\n\r\n**The `watch` event is not intended for replacing the standard Grunt API for configuring and running tasks. If you're trying to run tasks from within the `watch` event you're more than likely doing it wrong. Please read [configuring tasks](http://gruntjs.com/configuring-tasks).**\r\n\r\n##### Compiling Files As Needed\r\nA very common request is to only compile files as needed. Here is an example that will only lint changed files with the `jshint` task:\r\n\r\n```js\r\ngrunt.initConfig({\r\n  \"watch-svn\": {\r\n    scripts: {\r\n      repos: [{\r\n        dir : 'source/target',\r\n        repo : 'http://svnserver/svn/target/branches/wip'\r\n      }],\r\n      tasks: ['jshint'],\r\n      options: {\r\n        spawn: false,\r\n      },\r\n    },\r\n  },\r\n  jshint: {\r\n    all: ['lib/*.js'],\r\n  },\r\n});\r\n\r\n// on watch events configure jshint:all to only run on changed file\r\ngrunt.event.on('watch-svn', function(action, repo, changedFiles) {\r\n  grunt.config(['jshint', 'all'], repo.dir);\r\n});\r\n```\r\n\r\n\r\n\r\n### FAQs\r\n\r\n\r\n#### Why spawn as child processes as a default?\r\nThe goal of this watch task is as files are changed, run tasks as if they were triggered by the user themself. Each time a user runs `grunt` a process is spawned and tasks are ran in succession. In an effort to keep the experience consistent and continually produce expected results, this watch task spawns tasks as child processes by default.\r\n\r\nSandboxing task runs also allows this watch task to run more stable over long periods of time. As well as more efficiently with more complex tasks and file structures.\r\n\r\nSpawning does cause a performance hit (usually 500ms for most environments). It also cripples tasks that rely on the watch task to share the context with each subsequent run (i.e., reload tasks). If you would like a faster watch task or need to share the context please set the `spawn` option to `false`. Just be aware that with this option enabled, the watch task is more prone to failure.\r\n\r\n\r\n\r\n## Contributing\r\nIn lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).\r\n\r\n## Release History\r\n_(Nothing yet)_\r\n",
+  "readmeFilename": "README.md",
+  "_id": "grunt-watch-svn@0.1.6",
+  "dist": {
+    "shasum": "54916ba05d11633c8ac924de5335bd22abfb70bc"
+  },
+  "_from": "grunt-watch-svn@",
+  "_resolved": "https://registry.npmjs.org/grunt-watch-svn/-/grunt-watch-svn-0.1.6.tgz"
+}
