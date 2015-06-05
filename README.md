@@ -274,10 +274,12 @@ Sandboxing task runs also allows this watch task to run more stable over long pe
 
 Spawning does cause a performance hit (usually 500ms for most environments). It also cripples tasks that rely on the watch task to share the context with each subsequent run (i.e., reload tasks). If you would like a faster watch task or need to share the context please set the `spawn` option to `false`. Just be aware that with this option enabled, the watch task is more prone to failure.
 
-
-
+## Credits
+* This project would not be possible without the following author and projects:
+** [grunt-contrib-watch]Grunt Team "Cowboy" Ben Alman (https://github.com/gruntjs/grunt-contrib-watch)
+** [grunt-svn-checkout]Luke Woodward (https://github.com/lkwdwrd/grunt-svn-checkout)
 ## Contributing
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
 
 ## Release History
-_(Nothing yet)_
+* 0.1.6 - Initial
