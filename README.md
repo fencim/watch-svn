@@ -85,7 +85,27 @@ Example:
   },
 },
 ```
+#### options.watch
+Type: `Boolean`
+Default: true
 
+Defines whether it should watch svn changes after checkout or update or not. Default it true.
+
+Example:
+```js
+"watch-svn": {
+  scripts: {
+    repos: [{
+      dir : 'source/target',
+      repo : 'http://svnserver/svn/target/branches/wip'
+    }],
+    tasks: ['jshint'],
+    options: {
+      watch: false,
+    },
+  },
+},
+```
 #### options.debounceDelay
 Type: `Integer`
 Default: 500
