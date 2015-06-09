@@ -14,7 +14,7 @@ module.exports = function(grunt) {
   grunt.initConfig({
     meta: {       
         src: {
-            svnBase: 'http://153.59.98.147/svn/repos/pa'
+            svnBase: 'http://localhost/svn/sample'
         }
     },
     jshint: {
@@ -38,7 +38,7 @@ module.exports = function(grunt) {
       standard_docs: {
           repos : [{
             dir: 'source/std',  
-            repo: '<%= meta.src.svnBase %>/res/Others/StandardService/'
+            repo: '<%= meta.src.svnBase %>/sample'
           }],
           tasks: ['clean']
       }
